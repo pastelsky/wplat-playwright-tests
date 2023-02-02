@@ -1,0 +1,20 @@
+{
+  "name": "wplat-render-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "serve -p 5050 wpt/css",
+    "test": "yarn playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.30.0"
+  },
+  "dependencies": {
+    "globby": "11",
+    "serve": "^14.2.0"
+  }
+}
