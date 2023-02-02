@@ -7,8 +7,70 @@ pipelines:
   default:
     - parallel:
         - step:
-            name: Install dependencies
+            name: Shard 1
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test
+              - yarn playwright test --shard 1/10
+        - step:
+            name: Shard 2
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 2/10
+
+        - step:
+            name: Shard 3
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 3/10
+
+        - step:
+            name: Shard 4
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 4/10
+
+        - step:
+            name: Shard 5
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 5/10
+
+        - step:
+            name: Shard 6
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 6/10
+
+        - step:
+            name: Shard 7
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 7/10
+
+        - step:
+            name: Shard 8
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 8/10
+
+        - step:
+            name: Shard 9
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 9/10
+
+        - step:
+            name: Shard 10
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 10/10
