@@ -11,76 +11,184 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 1/10
+              - yarn playwright test --shard 1/20
             artifacts:
               - test-results/**
+              - playwright-report/**
+
         - step:
             name: Shard 2
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 2/10
+              - yarn playwright test --shard 2/20
             artifacts:
               - test-results/**
+              - playwright-report/**
+
         - step:
             name: Shard 3
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 3/10
-
+              - yarn playwright test --shard 3/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
         - step:
             name: Shard 4
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 4/10
+              - yarn playwright test --shard 4/20
             artifacts:
               - test-results/**
+              - playwright-report/**
+
         - step:
             name: Shard 5
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 5/10
+              - yarn playwright test --shard 5/20
             artifacts:
               - test-results/**
+              - playwright-report/**
         - step:
             name: Shard 6
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 6/10
-
+              - yarn playwright test --shard 6/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
         - step:
             name: Shard 7
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 7/10
+              - yarn playwright test --shard 7/20
             artifacts:
               - test-results/**
+              - playwright-report/**
         - step:
             name: Shard 8
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 8/10
+              - yarn playwright test --shard 8/20
             artifacts:
               - test-results/**
+              - playwright-report/**
         - step:
             name: Shard 9
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 9/10
+              - yarn playwright test --shard 9/20
             artifacts:
               - test-results/**
+              - playwright-report/**
         - step:
             name: Shard 10
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 10/10
+              - yarn playwright test --shard 10/20
             artifacts:
               - test-results/**
+              - playwright-report/**
+
+            name: Shard 11
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 11/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+
+        - step:
+            name: Shard 12
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 12/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+
+        - step:
+            name: Shard 13
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 13/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+        - step:
+            name: Shard 14
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 14/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+
+        - step:
+            name: Shard 15
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 15/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+        - step:
+            name: Shard 16
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 16/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+        - step:
+            name: Shard 17
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 17/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+        - step:
+            name: Shard 18
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 18/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+        - step:
+            name: Shard 19
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 19/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+        - step:
+            name: Shard 20
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 20/20
+            artifacts:
+              - test-results/**
+              - playwright-report/**
