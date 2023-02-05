@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path'
 
 
-const tests = globby.sync('wpt/css/**/*.html').map(a => a.replace('wpt/css/', ''))
+const tests = globby.sync('wpt/css/**/*.html').map(a => a.replace('wpt/css/', '')).slice(0, 200)
 
 console.log('tests are', tests)
 
