@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "serve -p 5050 wpt/css",
+    "serve": "serve -L -p 5050 wpt/css",
     "test": "yarn playwright test"
   },
   "keywords": [],
