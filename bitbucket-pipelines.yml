@@ -11,7 +11,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 1/20
+              - yarn playwright test --shard 1/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -21,7 +21,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 2/20
+              - yarn playwright test --shard 2/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -31,7 +31,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 3/20
+              - yarn playwright test --shard 3/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -40,7 +40,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 4/20
+              - yarn playwright test --shard 4/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -50,7 +50,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 5/20
+              - yarn playwright test --shard 5/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -59,7 +59,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 6/20
+              - yarn playwright test --shard 6/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -68,7 +68,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 7/20
+              - yarn playwright test --shard 7/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -77,7 +77,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 8/20
+              - yarn playwright test --shard 8/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -86,7 +86,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 9/20
+              - yarn playwright test --shard 9/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -95,7 +95,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 10/20
+              - yarn playwright test --shard 10/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -104,7 +104,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 11/20
+              - yarn playwright test --shard 11/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -114,7 +114,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 12/20
+              - yarn playwright test --shard 12/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -124,7 +124,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 13/20
+              - yarn playwright test --shard 13/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -133,7 +133,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 14/20
+              - yarn playwright test --shard 14/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -143,7 +143,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 15/20
+              - yarn playwright test --shard 15/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -152,7 +152,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 16/20
+              - yarn playwright test --shard 16/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -161,7 +161,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 17/20
+              - yarn playwright test --shard 17/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -170,7 +170,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 18/20
+              - yarn playwright test --shard 18/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -179,7 +179,7 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 19/20
+              - yarn playwright test --shard 19/25
             artifacts:
               - test-results/**
               - playwright-report/**
@@ -188,7 +188,53 @@ pipelines:
             script:
               - yarn install
               - npx playwright install --with-deps
-              - yarn playwright test --shard 20/20
+              - yarn playwright test --shard 20/25
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+
+        - step:
+            name: Shard 21
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 21/25
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+        - step:
+            name: Shard 22
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 22/25
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+        - step:
+            name: Shard 23
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 23/25
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+        - step:
+            name: Shard 24
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 24/25
+            artifacts:
+              - test-results/**
+              - playwright-report/**
+        - step:
+            name: Shard 25
+            script:
+              - yarn install
+              - npx playwright install --with-deps
+              - yarn playwright test --shard 25/25
             artifacts:
               - test-results/**
               - playwright-report/**
