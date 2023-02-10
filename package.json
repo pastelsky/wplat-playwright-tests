@@ -11,10 +11,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.30.0"
+    "@playwright/test": "1.30.0"
   },
   "dependencies": {
     "globby": "11",
+    "lodash": "^4.17.21",
     "serve": "^14.2.0"
   }
 }

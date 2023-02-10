@@ -1,218 +1,4195 @@
+
 name: Playwright Tests
 on:
   push:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+    
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  
 jobs:
-  test-shard-1:
+  shard-CSS2:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
     - uses: actions/setup-node@v3
       with:
         node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run Playwright tests - Shard 1
-      run: npx playwright test --shard 1/10
-    - uses: actions/upload-artifact@v3
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/CSS2.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/CSS2 && mv playwright-report github-pages/CSS2
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/CSS2 && mv github-pages /tmp/publish/CSS2
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/CSS2 && mkdir -p ${{ github.ref_name }}/CSS2
+        cp -r /tmp/publish/CSS2/github-pages/CSS2/playwright-report/* ./${{ github.ref_name }}/CSS2
+        git status
+        git add -A ${{ github.ref_name }}/CSS2/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
       if: always()
       with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 0
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/CSS2/index.html"    
 
-  test-shard-2:
+  shard-compositing:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests - Shard 2
-        run: npx playwright test --shard 2/10
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/compositing.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/compositing && mv playwright-report github-pages/compositing
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/compositing && mv github-pages /tmp/publish/compositing
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/compositing && mkdir -p ${{ github.ref_name }}/compositing
+        cp -r /tmp/publish/compositing/github-pages/compositing/playwright-report/* ./${{ github.ref_name }}/compositing
+        git status
+        git add -A ${{ github.ref_name }}/compositing/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/compositing/index.html"    
 
-  test-shard-3:
+  shard-css-align:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests - Shard 1
-        run: npx playwright test --shard 1/10
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-align.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-align && mv playwright-report github-pages/css-align
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-align && mv github-pages /tmp/publish/css-align
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-align && mkdir -p ${{ github.ref_name }}/css-align
+        cp -r /tmp/publish/css-align/github-pages/css-align/playwright-report/* ./${{ github.ref_name }}/css-align
+        git status
+        git add -A ${{ github.ref_name }}/css-align/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-align/index.html"    
 
-  test-shard-4:
+  shard-css-anchor-position:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests - Shard 1
-        run: npx playwright test --shard 4/10
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-anchor-position.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-anchor-position && mv playwright-report github-pages/css-anchor-position
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-anchor-position && mv github-pages /tmp/publish/css-anchor-position
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-anchor-position && mkdir -p ${{ github.ref_name }}/css-anchor-position
+        cp -r /tmp/publish/css-anchor-position/github-pages/css-anchor-position/playwright-report/* ./${{ github.ref_name }}/css-anchor-position
+        git status
+        git add -A ${{ github.ref_name }}/css-anchor-position/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-anchor-position/index.html"    
 
-  test-shard-5:
+  shard-css-animations:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests - Shard 1
-        run: npx playwright test --shard 5/10
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-animations.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-animations && mv playwright-report github-pages/css-animations
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-animations && mv github-pages /tmp/publish/css-animations
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-animations && mkdir -p ${{ github.ref_name }}/css-animations
+        cp -r /tmp/publish/css-animations/github-pages/css-animations/playwright-report/* ./${{ github.ref_name }}/css-animations
+        git status
+        git add -A ${{ github.ref_name }}/css-animations/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-animations/index.html"    
 
-  test-shard-6:
+  shard-css-backgrounds:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests - Shard 1
-        run: npx playwright test --shard 6/10
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-backgrounds.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-backgrounds && mv playwright-report github-pages/css-backgrounds
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-backgrounds && mv github-pages /tmp/publish/css-backgrounds
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-backgrounds && mkdir -p ${{ github.ref_name }}/css-backgrounds
+        cp -r /tmp/publish/css-backgrounds/github-pages/css-backgrounds/playwright-report/* ./${{ github.ref_name }}/css-backgrounds
+        git status
+        git add -A ${{ github.ref_name }}/css-backgrounds/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 1000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-backgrounds/index.html"    
 
-  test-shard-7:
+  shard-css-borders:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests - Shard 1
-        run: npx playwright test --shard 7/10
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-borders.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-borders && mv playwright-report github-pages/css-borders
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-borders && mv github-pages /tmp/publish/css-borders
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-borders && mkdir -p ${{ github.ref_name }}/css-borders
+        cp -r /tmp/publish/css-borders/github-pages/css-borders/playwright-report/* ./${{ github.ref_name }}/css-borders
+        git status
+        git add -A ${{ github.ref_name }}/css-borders/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 1200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-borders/index.html"    
 
-  test-shard-8:
+  shard-css-box:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests - Shard 1
-        run: npx playwright test --shard 8/10
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-box.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-box && mv playwright-report github-pages/css-box
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-box && mv github-pages /tmp/publish/css-box
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-box && mkdir -p ${{ github.ref_name }}/css-box
+        cp -r /tmp/publish/css-box/github-pages/css-box/playwright-report/* ./${{ github.ref_name }}/css-box
+        git status
+        git add -A ${{ github.ref_name }}/css-box/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 1400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-box/index.html"    
 
-
-  test-shard-9:
+  shard-css-break:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests - Shard 1
-        run: npx playwright test --shard 9/10
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-break.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-break && mv playwright-report github-pages/css-break
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-break && mv github-pages /tmp/publish/css-break
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-break && mkdir -p ${{ github.ref_name }}/css-break
+        cp -r /tmp/publish/css-break/github-pages/css-break/playwright-report/* ./${{ github.ref_name }}/css-break
+        git status
+        git add -A ${{ github.ref_name }}/css-break/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 1600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-break/index.html"    
 
-
-  test-shard-10:
+  shard-css-cascade:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests - Shard 1
-        run: npx playwright test --shard 10/10
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-cascade.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-cascade && mv playwright-report github-pages/css-cascade
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-cascade && mv github-pages /tmp/publish/css-cascade
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-cascade && mkdir -p ${{ github.ref_name }}/css-cascade
+        cp -r /tmp/publish/css-cascade/github-pages/css-cascade/playwright-report/* ./${{ github.ref_name }}/css-cascade
+        git status
+        git add -A ${{ github.ref_name }}/css-cascade/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 1800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-cascade/index.html"    
+
+  shard-css-color:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-color.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-color && mv playwright-report github-pages/css-color
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-color && mv github-pages /tmp/publish/css-color
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-color && mkdir -p ${{ github.ref_name }}/css-color
+        cp -r /tmp/publish/css-color/github-pages/css-color/playwright-report/* ./${{ github.ref_name }}/css-color
+        git status
+        git add -A ${{ github.ref_name }}/css-color/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 2000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-color/index.html"    
+
+  shard-css-color-adjust:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-color-adjust.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-color-adjust && mv playwright-report github-pages/css-color-adjust
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-color-adjust && mv github-pages /tmp/publish/css-color-adjust
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-color-adjust && mkdir -p ${{ github.ref_name }}/css-color-adjust
+        cp -r /tmp/publish/css-color-adjust/github-pages/css-color-adjust/playwright-report/* ./${{ github.ref_name }}/css-color-adjust
+        git status
+        git add -A ${{ github.ref_name }}/css-color-adjust/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 2200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-color-adjust/index.html"    
+
+  shard-css-conditional:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-conditional.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-conditional && mv playwright-report github-pages/css-conditional
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-conditional && mv github-pages /tmp/publish/css-conditional
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-conditional && mkdir -p ${{ github.ref_name }}/css-conditional
+        cp -r /tmp/publish/css-conditional/github-pages/css-conditional/playwright-report/* ./${{ github.ref_name }}/css-conditional
+        git status
+        git add -A ${{ github.ref_name }}/css-conditional/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 2400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-conditional/index.html"    
+
+  shard-css-contain:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-contain.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-contain && mv playwright-report github-pages/css-contain
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-contain && mv github-pages /tmp/publish/css-contain
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-contain && mkdir -p ${{ github.ref_name }}/css-contain
+        cp -r /tmp/publish/css-contain/github-pages/css-contain/playwright-report/* ./${{ github.ref_name }}/css-contain
+        git status
+        git add -A ${{ github.ref_name }}/css-contain/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 2600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-contain/index.html"    
+
+  shard-css-content:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-content.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-content && mv playwright-report github-pages/css-content
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-content && mv github-pages /tmp/publish/css-content
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-content && mkdir -p ${{ github.ref_name }}/css-content
+        cp -r /tmp/publish/css-content/github-pages/css-content/playwright-report/* ./${{ github.ref_name }}/css-content
+        git status
+        git add -A ${{ github.ref_name }}/css-content/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 2800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-content/index.html"    
+
+  shard-css-counter-styles:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-counter-styles.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-counter-styles && mv playwright-report github-pages/css-counter-styles
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-counter-styles && mv github-pages /tmp/publish/css-counter-styles
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-counter-styles && mkdir -p ${{ github.ref_name }}/css-counter-styles
+        cp -r /tmp/publish/css-counter-styles/github-pages/css-counter-styles/playwright-report/* ./${{ github.ref_name }}/css-counter-styles
+        git status
+        git add -A ${{ github.ref_name }}/css-counter-styles/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 3000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-counter-styles/index.html"    
+
+  shard-css-device-adapt:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-device-adapt.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-device-adapt && mv playwright-report github-pages/css-device-adapt
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-device-adapt && mv github-pages /tmp/publish/css-device-adapt
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-device-adapt && mkdir -p ${{ github.ref_name }}/css-device-adapt
+        cp -r /tmp/publish/css-device-adapt/github-pages/css-device-adapt/playwright-report/* ./${{ github.ref_name }}/css-device-adapt
+        git status
+        git add -A ${{ github.ref_name }}/css-device-adapt/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 3200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-device-adapt/index.html"    
+
+  shard-css-display:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-display.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-display && mv playwright-report github-pages/css-display
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-display && mv github-pages /tmp/publish/css-display
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-display && mkdir -p ${{ github.ref_name }}/css-display
+        cp -r /tmp/publish/css-display/github-pages/css-display/playwright-report/* ./${{ github.ref_name }}/css-display
+        git status
+        git add -A ${{ github.ref_name }}/css-display/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 3400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-display/index.html"    
+
+  shard-css-easing:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-easing.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-easing && mv playwright-report github-pages/css-easing
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-easing && mv github-pages /tmp/publish/css-easing
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-easing && mkdir -p ${{ github.ref_name }}/css-easing
+        cp -r /tmp/publish/css-easing/github-pages/css-easing/playwright-report/* ./${{ github.ref_name }}/css-easing
+        git status
+        git add -A ${{ github.ref_name }}/css-easing/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 3600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-easing/index.html"    
+
+  shard-css-env:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-env.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-env && mv playwright-report github-pages/css-env
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-env && mv github-pages /tmp/publish/css-env
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-env && mkdir -p ${{ github.ref_name }}/css-env
+        cp -r /tmp/publish/css-env/github-pages/css-env/playwright-report/* ./${{ github.ref_name }}/css-env
+        git status
+        git add -A ${{ github.ref_name }}/css-env/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 3800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-env/index.html"    
+
+  shard-css-exclusions:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-exclusions.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-exclusions && mv playwright-report github-pages/css-exclusions
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-exclusions && mv github-pages /tmp/publish/css-exclusions
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-exclusions && mkdir -p ${{ github.ref_name }}/css-exclusions
+        cp -r /tmp/publish/css-exclusions/github-pages/css-exclusions/playwright-report/* ./${{ github.ref_name }}/css-exclusions
+        git status
+        git add -A ${{ github.ref_name }}/css-exclusions/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 4000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-exclusions/index.html"    
+
+  shard-css-fill-stroke:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-fill-stroke.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-fill-stroke && mv playwright-report github-pages/css-fill-stroke
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-fill-stroke && mv github-pages /tmp/publish/css-fill-stroke
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-fill-stroke && mkdir -p ${{ github.ref_name }}/css-fill-stroke
+        cp -r /tmp/publish/css-fill-stroke/github-pages/css-fill-stroke/playwright-report/* ./${{ github.ref_name }}/css-fill-stroke
+        git status
+        git add -A ${{ github.ref_name }}/css-fill-stroke/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 4200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-fill-stroke/index.html"    
+
+  shard-css-flexbox:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-flexbox.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-flexbox && mv playwright-report github-pages/css-flexbox
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-flexbox && mv github-pages /tmp/publish/css-flexbox
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-flexbox && mkdir -p ${{ github.ref_name }}/css-flexbox
+        cp -r /tmp/publish/css-flexbox/github-pages/css-flexbox/playwright-report/* ./${{ github.ref_name }}/css-flexbox
+        git status
+        git add -A ${{ github.ref_name }}/css-flexbox/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 4400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-flexbox/index.html"    
+
+  shard-css-font-loading:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-font-loading.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-font-loading && mv playwright-report github-pages/css-font-loading
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-font-loading && mv github-pages /tmp/publish/css-font-loading
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-font-loading && mkdir -p ${{ github.ref_name }}/css-font-loading
+        cp -r /tmp/publish/css-font-loading/github-pages/css-font-loading/playwright-report/* ./${{ github.ref_name }}/css-font-loading
+        git status
+        git add -A ${{ github.ref_name }}/css-font-loading/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 4600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-font-loading/index.html"    
+
+  shard-css-fonts:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-fonts.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-fonts && mv playwright-report github-pages/css-fonts
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-fonts && mv github-pages /tmp/publish/css-fonts
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-fonts && mkdir -p ${{ github.ref_name }}/css-fonts
+        cp -r /tmp/publish/css-fonts/github-pages/css-fonts/playwright-report/* ./${{ github.ref_name }}/css-fonts
+        git status
+        git add -A ${{ github.ref_name }}/css-fonts/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 4800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-fonts/index.html"    
+
+  shard-css-forced-color-adjust:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-forced-color-adjust.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-forced-color-adjust && mv playwright-report github-pages/css-forced-color-adjust
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-forced-color-adjust && mv github-pages /tmp/publish/css-forced-color-adjust
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-forced-color-adjust && mkdir -p ${{ github.ref_name }}/css-forced-color-adjust
+        cp -r /tmp/publish/css-forced-color-adjust/github-pages/css-forced-color-adjust/playwright-report/* ./${{ github.ref_name }}/css-forced-color-adjust
+        git status
+        git add -A ${{ github.ref_name }}/css-forced-color-adjust/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 5000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-forced-color-adjust/index.html"    
+
+  shard-css-gcpm:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-gcpm.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-gcpm && mv playwright-report github-pages/css-gcpm
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-gcpm && mv github-pages /tmp/publish/css-gcpm
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-gcpm && mkdir -p ${{ github.ref_name }}/css-gcpm
+        cp -r /tmp/publish/css-gcpm/github-pages/css-gcpm/playwright-report/* ./${{ github.ref_name }}/css-gcpm
+        git status
+        git add -A ${{ github.ref_name }}/css-gcpm/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 5200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-gcpm/index.html"    
+
+  shard-css-grid:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-grid.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-grid && mv playwright-report github-pages/css-grid
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-grid && mv github-pages /tmp/publish/css-grid
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-grid && mkdir -p ${{ github.ref_name }}/css-grid
+        cp -r /tmp/publish/css-grid/github-pages/css-grid/playwright-report/* ./${{ github.ref_name }}/css-grid
+        git status
+        git add -A ${{ github.ref_name }}/css-grid/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 5400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-grid/index.html"    
+
+  shard-css-highlight-api:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-highlight-api.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-highlight-api && mv playwright-report github-pages/css-highlight-api
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-highlight-api && mv github-pages /tmp/publish/css-highlight-api
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-highlight-api && mkdir -p ${{ github.ref_name }}/css-highlight-api
+        cp -r /tmp/publish/css-highlight-api/github-pages/css-highlight-api/playwright-report/* ./${{ github.ref_name }}/css-highlight-api
+        git status
+        git add -A ${{ github.ref_name }}/css-highlight-api/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 5600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-highlight-api/index.html"    
+
+  shard-css-images:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-images.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-images && mv playwright-report github-pages/css-images
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-images && mv github-pages /tmp/publish/css-images
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-images && mkdir -p ${{ github.ref_name }}/css-images
+        cp -r /tmp/publish/css-images/github-pages/css-images/playwright-report/* ./${{ github.ref_name }}/css-images
+        git status
+        git add -A ${{ github.ref_name }}/css-images/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 5800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-images/index.html"    
+
+  shard-css-inline:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-inline.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-inline && mv playwright-report github-pages/css-inline
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-inline && mv github-pages /tmp/publish/css-inline
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-inline && mkdir -p ${{ github.ref_name }}/css-inline
+        cp -r /tmp/publish/css-inline/github-pages/css-inline/playwright-report/* ./${{ github.ref_name }}/css-inline
+        git status
+        git add -A ${{ github.ref_name }}/css-inline/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 6000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-inline/index.html"    
+
+  shard-css-layout-api:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-layout-api.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-layout-api && mv playwright-report github-pages/css-layout-api
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-layout-api && mv github-pages /tmp/publish/css-layout-api
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-layout-api && mkdir -p ${{ github.ref_name }}/css-layout-api
+        cp -r /tmp/publish/css-layout-api/github-pages/css-layout-api/playwright-report/* ./${{ github.ref_name }}/css-layout-api
+        git status
+        git add -A ${{ github.ref_name }}/css-layout-api/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 6200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-layout-api/index.html"    
+
+  shard-css-lists:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-lists.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-lists && mv playwright-report github-pages/css-lists
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-lists && mv github-pages /tmp/publish/css-lists
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-lists && mkdir -p ${{ github.ref_name }}/css-lists
+        cp -r /tmp/publish/css-lists/github-pages/css-lists/playwright-report/* ./${{ github.ref_name }}/css-lists
+        git status
+        git add -A ${{ github.ref_name }}/css-lists/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 6400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-lists/index.html"    
+
+  shard-css-logical:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-logical.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-logical && mv playwright-report github-pages/css-logical
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-logical && mv github-pages /tmp/publish/css-logical
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-logical && mkdir -p ${{ github.ref_name }}/css-logical
+        cp -r /tmp/publish/css-logical/github-pages/css-logical/playwright-report/* ./${{ github.ref_name }}/css-logical
+        git status
+        git add -A ${{ github.ref_name }}/css-logical/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 6600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-logical/index.html"    
+
+  shard-css-masking:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-masking.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-masking && mv playwright-report github-pages/css-masking
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-masking && mv github-pages /tmp/publish/css-masking
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-masking && mkdir -p ${{ github.ref_name }}/css-masking
+        cp -r /tmp/publish/css-masking/github-pages/css-masking/playwright-report/* ./${{ github.ref_name }}/css-masking
+        git status
+        git add -A ${{ github.ref_name }}/css-masking/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 6800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-masking/index.html"    
+
+  shard-css-multicol:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-multicol.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-multicol && mv playwright-report github-pages/css-multicol
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-multicol && mv github-pages /tmp/publish/css-multicol
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-multicol && mkdir -p ${{ github.ref_name }}/css-multicol
+        cp -r /tmp/publish/css-multicol/github-pages/css-multicol/playwright-report/* ./${{ github.ref_name }}/css-multicol
+        git status
+        git add -A ${{ github.ref_name }}/css-multicol/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 7000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-multicol/index.html"    
+
+  shard-css-nesting:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-nesting.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-nesting && mv playwright-report github-pages/css-nesting
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-nesting && mv github-pages /tmp/publish/css-nesting
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-nesting && mkdir -p ${{ github.ref_name }}/css-nesting
+        cp -r /tmp/publish/css-nesting/github-pages/css-nesting/playwright-report/* ./${{ github.ref_name }}/css-nesting
+        git status
+        git add -A ${{ github.ref_name }}/css-nesting/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 7200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-nesting/index.html"    
+
+  shard-css-outline:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-outline.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-outline && mv playwright-report github-pages/css-outline
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-outline && mv github-pages /tmp/publish/css-outline
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-outline && mkdir -p ${{ github.ref_name }}/css-outline
+        cp -r /tmp/publish/css-outline/github-pages/css-outline/playwright-report/* ./${{ github.ref_name }}/css-outline
+        git status
+        git add -A ${{ github.ref_name }}/css-outline/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 7400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-outline/index.html"    
+
+  shard-css-overflow:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-overflow.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-overflow && mv playwright-report github-pages/css-overflow
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-overflow && mv github-pages /tmp/publish/css-overflow
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-overflow && mkdir -p ${{ github.ref_name }}/css-overflow
+        cp -r /tmp/publish/css-overflow/github-pages/css-overflow/playwright-report/* ./${{ github.ref_name }}/css-overflow
+        git status
+        git add -A ${{ github.ref_name }}/css-overflow/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 7600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-overflow/index.html"    
+
+  shard-css-overscroll-behavior:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-overscroll-behavior.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-overscroll-behavior && mv playwright-report github-pages/css-overscroll-behavior
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-overscroll-behavior && mv github-pages /tmp/publish/css-overscroll-behavior
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-overscroll-behavior && mkdir -p ${{ github.ref_name }}/css-overscroll-behavior
+        cp -r /tmp/publish/css-overscroll-behavior/github-pages/css-overscroll-behavior/playwright-report/* ./${{ github.ref_name }}/css-overscroll-behavior
+        git status
+        git add -A ${{ github.ref_name }}/css-overscroll-behavior/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 7800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-overscroll-behavior/index.html"    
+
+  shard-css-page:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-page.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-page && mv playwright-report github-pages/css-page
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-page && mv github-pages /tmp/publish/css-page
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-page && mkdir -p ${{ github.ref_name }}/css-page
+        cp -r /tmp/publish/css-page/github-pages/css-page/playwright-report/* ./${{ github.ref_name }}/css-page
+        git status
+        git add -A ${{ github.ref_name }}/css-page/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 8000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-page/index.html"    
+
+  shard-css-paint-api:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-paint-api.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-paint-api && mv playwright-report github-pages/css-paint-api
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-paint-api && mv github-pages /tmp/publish/css-paint-api
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-paint-api && mkdir -p ${{ github.ref_name }}/css-paint-api
+        cp -r /tmp/publish/css-paint-api/github-pages/css-paint-api/playwright-report/* ./${{ github.ref_name }}/css-paint-api
+        git status
+        git add -A ${{ github.ref_name }}/css-paint-api/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 8200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-paint-api/index.html"    
+
+  shard-css-parser-api:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-parser-api.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-parser-api && mv playwright-report github-pages/css-parser-api
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-parser-api && mv github-pages /tmp/publish/css-parser-api
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-parser-api && mkdir -p ${{ github.ref_name }}/css-parser-api
+        cp -r /tmp/publish/css-parser-api/github-pages/css-parser-api/playwright-report/* ./${{ github.ref_name }}/css-parser-api
+        git status
+        git add -A ${{ github.ref_name }}/css-parser-api/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 8400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-parser-api/index.html"    
+
+  shard-css-position:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-position.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-position && mv playwright-report github-pages/css-position
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-position && mv github-pages /tmp/publish/css-position
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-position && mkdir -p ${{ github.ref_name }}/css-position
+        cp -r /tmp/publish/css-position/github-pages/css-position/playwright-report/* ./${{ github.ref_name }}/css-position
+        git status
+        git add -A ${{ github.ref_name }}/css-position/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 8600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-position/index.html"    
+
+  shard-css-properties-values-api:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-properties-values-api.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-properties-values-api && mv playwright-report github-pages/css-properties-values-api
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-properties-values-api && mv github-pages /tmp/publish/css-properties-values-api
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-properties-values-api && mkdir -p ${{ github.ref_name }}/css-properties-values-api
+        cp -r /tmp/publish/css-properties-values-api/github-pages/css-properties-values-api/playwright-report/* ./${{ github.ref_name }}/css-properties-values-api
+        git status
+        git add -A ${{ github.ref_name }}/css-properties-values-api/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 8800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-properties-values-api/index.html"    
+
+  shard-css-pseudo:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-pseudo.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-pseudo && mv playwright-report github-pages/css-pseudo
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-pseudo && mv github-pages /tmp/publish/css-pseudo
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-pseudo && mkdir -p ${{ github.ref_name }}/css-pseudo
+        cp -r /tmp/publish/css-pseudo/github-pages/css-pseudo/playwright-report/* ./${{ github.ref_name }}/css-pseudo
+        git status
+        git add -A ${{ github.ref_name }}/css-pseudo/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 9000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-pseudo/index.html"    
+
+  shard-css-round-display:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-round-display.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-round-display && mv playwright-report github-pages/css-round-display
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-round-display && mv github-pages /tmp/publish/css-round-display
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-round-display && mkdir -p ${{ github.ref_name }}/css-round-display
+        cp -r /tmp/publish/css-round-display/github-pages/css-round-display/playwright-report/* ./${{ github.ref_name }}/css-round-display
+        git status
+        git add -A ${{ github.ref_name }}/css-round-display/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 9200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-round-display/index.html"    
+
+  shard-css-ruby:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-ruby.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-ruby && mv playwright-report github-pages/css-ruby
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-ruby && mv github-pages /tmp/publish/css-ruby
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-ruby && mkdir -p ${{ github.ref_name }}/css-ruby
+        cp -r /tmp/publish/css-ruby/github-pages/css-ruby/playwright-report/* ./${{ github.ref_name }}/css-ruby
+        git status
+        git add -A ${{ github.ref_name }}/css-ruby/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 9400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-ruby/index.html"    
+
+  shard-css-scoping:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-scoping.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-scoping && mv playwright-report github-pages/css-scoping
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-scoping && mv github-pages /tmp/publish/css-scoping
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-scoping && mkdir -p ${{ github.ref_name }}/css-scoping
+        cp -r /tmp/publish/css-scoping/github-pages/css-scoping/playwright-report/* ./${{ github.ref_name }}/css-scoping
+        git status
+        git add -A ${{ github.ref_name }}/css-scoping/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 9600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-scoping/index.html"    
+
+  shard-css-scroll-anchoring:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-scroll-anchoring.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-scroll-anchoring && mv playwright-report github-pages/css-scroll-anchoring
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-scroll-anchoring && mv github-pages /tmp/publish/css-scroll-anchoring
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-scroll-anchoring && mkdir -p ${{ github.ref_name }}/css-scroll-anchoring
+        cp -r /tmp/publish/css-scroll-anchoring/github-pages/css-scroll-anchoring/playwright-report/* ./${{ github.ref_name }}/css-scroll-anchoring
+        git status
+        git add -A ${{ github.ref_name }}/css-scroll-anchoring/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 9800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-scroll-anchoring/index.html"    
+
+  shard-css-scroll-snap:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-scroll-snap.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-scroll-snap && mv playwright-report github-pages/css-scroll-snap
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-scroll-snap && mv github-pages /tmp/publish/css-scroll-snap
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-scroll-snap && mkdir -p ${{ github.ref_name }}/css-scroll-snap
+        cp -r /tmp/publish/css-scroll-snap/github-pages/css-scroll-snap/playwright-report/* ./${{ github.ref_name }}/css-scroll-snap
+        git status
+        git add -A ${{ github.ref_name }}/css-scroll-snap/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 10000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-scroll-snap/index.html"    
+
+  shard-css-scrollbars:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-scrollbars.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-scrollbars && mv playwright-report github-pages/css-scrollbars
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-scrollbars && mv github-pages /tmp/publish/css-scrollbars
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-scrollbars && mkdir -p ${{ github.ref_name }}/css-scrollbars
+        cp -r /tmp/publish/css-scrollbars/github-pages/css-scrollbars/playwright-report/* ./${{ github.ref_name }}/css-scrollbars
+        git status
+        git add -A ${{ github.ref_name }}/css-scrollbars/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 10200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-scrollbars/index.html"    
+
+  shard-css-shadow-parts:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-shadow-parts.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-shadow-parts && mv playwright-report github-pages/css-shadow-parts
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-shadow-parts && mv github-pages /tmp/publish/css-shadow-parts
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-shadow-parts && mkdir -p ${{ github.ref_name }}/css-shadow-parts
+        cp -r /tmp/publish/css-shadow-parts/github-pages/css-shadow-parts/playwright-report/* ./${{ github.ref_name }}/css-shadow-parts
+        git status
+        git add -A ${{ github.ref_name }}/css-shadow-parts/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 10400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-shadow-parts/index.html"    
+
+  shard-css-shapes:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-shapes.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-shapes && mv playwright-report github-pages/css-shapes
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-shapes && mv github-pages /tmp/publish/css-shapes
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-shapes && mkdir -p ${{ github.ref_name }}/css-shapes
+        cp -r /tmp/publish/css-shapes/github-pages/css-shapes/playwright-report/* ./${{ github.ref_name }}/css-shapes
+        git status
+        git add -A ${{ github.ref_name }}/css-shapes/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 10600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-shapes/index.html"    
+
+  shard-css-size-adjust:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-size-adjust.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-size-adjust && mv playwright-report github-pages/css-size-adjust
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-size-adjust && mv github-pages /tmp/publish/css-size-adjust
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-size-adjust && mkdir -p ${{ github.ref_name }}/css-size-adjust
+        cp -r /tmp/publish/css-size-adjust/github-pages/css-size-adjust/playwright-report/* ./${{ github.ref_name }}/css-size-adjust
+        git status
+        git add -A ${{ github.ref_name }}/css-size-adjust/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 10800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-size-adjust/index.html"    
+
+  shard-css-sizing:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-sizing.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-sizing && mv playwright-report github-pages/css-sizing
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-sizing && mv github-pages /tmp/publish/css-sizing
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-sizing && mkdir -p ${{ github.ref_name }}/css-sizing
+        cp -r /tmp/publish/css-sizing/github-pages/css-sizing/playwright-report/* ./${{ github.ref_name }}/css-sizing
+        git status
+        git add -A ${{ github.ref_name }}/css-sizing/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 11000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-sizing/index.html"    
+
+  shard-css-speech:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-speech.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-speech && mv playwright-report github-pages/css-speech
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-speech && mv github-pages /tmp/publish/css-speech
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-speech && mkdir -p ${{ github.ref_name }}/css-speech
+        cp -r /tmp/publish/css-speech/github-pages/css-speech/playwright-report/* ./${{ github.ref_name }}/css-speech
+        git status
+        git add -A ${{ github.ref_name }}/css-speech/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 11200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-speech/index.html"    
+
+  shard-css-syntax:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-syntax.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-syntax && mv playwright-report github-pages/css-syntax
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-syntax && mv github-pages /tmp/publish/css-syntax
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-syntax && mkdir -p ${{ github.ref_name }}/css-syntax
+        cp -r /tmp/publish/css-syntax/github-pages/css-syntax/playwright-report/* ./${{ github.ref_name }}/css-syntax
+        git status
+        git add -A ${{ github.ref_name }}/css-syntax/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 11400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-syntax/index.html"    
+
+  shard-css-tables:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-tables.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-tables && mv playwright-report github-pages/css-tables
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-tables && mv github-pages /tmp/publish/css-tables
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-tables && mkdir -p ${{ github.ref_name }}/css-tables
+        cp -r /tmp/publish/css-tables/github-pages/css-tables/playwright-report/* ./${{ github.ref_name }}/css-tables
+        git status
+        git add -A ${{ github.ref_name }}/css-tables/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 11600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-tables/index.html"    
+
+  shard-css-text:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-text.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-text && mv playwright-report github-pages/css-text
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-text && mv github-pages /tmp/publish/css-text
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-text && mkdir -p ${{ github.ref_name }}/css-text
+        cp -r /tmp/publish/css-text/github-pages/css-text/playwright-report/* ./${{ github.ref_name }}/css-text
+        git status
+        git add -A ${{ github.ref_name }}/css-text/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 11800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-text/index.html"    
+
+  shard-css-text-decor:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-text-decor.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-text-decor && mv playwright-report github-pages/css-text-decor
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-text-decor && mv github-pages /tmp/publish/css-text-decor
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-text-decor && mkdir -p ${{ github.ref_name }}/css-text-decor
+        cp -r /tmp/publish/css-text-decor/github-pages/css-text-decor/playwright-report/* ./${{ github.ref_name }}/css-text-decor
+        git status
+        git add -A ${{ github.ref_name }}/css-text-decor/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 12000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-text-decor/index.html"    
+
+  shard-css-toggle:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-toggle.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-toggle && mv playwright-report github-pages/css-toggle
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-toggle && mv github-pages /tmp/publish/css-toggle
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-toggle && mkdir -p ${{ github.ref_name }}/css-toggle
+        cp -r /tmp/publish/css-toggle/github-pages/css-toggle/playwright-report/* ./${{ github.ref_name }}/css-toggle
+        git status
+        git add -A ${{ github.ref_name }}/css-toggle/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 12200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-toggle/index.html"    
+
+  shard-css-transforms:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-transforms.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-transforms && mv playwright-report github-pages/css-transforms
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-transforms && mv github-pages /tmp/publish/css-transforms
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-transforms && mkdir -p ${{ github.ref_name }}/css-transforms
+        cp -r /tmp/publish/css-transforms/github-pages/css-transforms/playwright-report/* ./${{ github.ref_name }}/css-transforms
+        git status
+        git add -A ${{ github.ref_name }}/css-transforms/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 12400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-transforms/index.html"    
+
+  shard-css-transitions:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-transitions.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-transitions && mv playwright-report github-pages/css-transitions
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-transitions && mv github-pages /tmp/publish/css-transitions
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-transitions && mkdir -p ${{ github.ref_name }}/css-transitions
+        cp -r /tmp/publish/css-transitions/github-pages/css-transitions/playwright-report/* ./${{ github.ref_name }}/css-transitions
+        git status
+        git add -A ${{ github.ref_name }}/css-transitions/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 12600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-transitions/index.html"    
+
+  shard-css-typed-om:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-typed-om.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-typed-om && mv playwright-report github-pages/css-typed-om
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-typed-om && mv github-pages /tmp/publish/css-typed-om
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-typed-om && mkdir -p ${{ github.ref_name }}/css-typed-om
+        cp -r /tmp/publish/css-typed-om/github-pages/css-typed-om/playwright-report/* ./${{ github.ref_name }}/css-typed-om
+        git status
+        git add -A ${{ github.ref_name }}/css-typed-om/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 12800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-typed-om/index.html"    
+
+  shard-css-ui:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-ui.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-ui && mv playwright-report github-pages/css-ui
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-ui && mv github-pages /tmp/publish/css-ui
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-ui && mkdir -p ${{ github.ref_name }}/css-ui
+        cp -r /tmp/publish/css-ui/github-pages/css-ui/playwright-report/* ./${{ github.ref_name }}/css-ui
+        git status
+        git add -A ${{ github.ref_name }}/css-ui/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 13000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-ui/index.html"    
+
+  shard-css-values:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-values.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-values && mv playwright-report github-pages/css-values
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-values && mv github-pages /tmp/publish/css-values
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-values && mkdir -p ${{ github.ref_name }}/css-values
+        cp -r /tmp/publish/css-values/github-pages/css-values/playwright-report/* ./${{ github.ref_name }}/css-values
+        git status
+        git add -A ${{ github.ref_name }}/css-values/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 13200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-values/index.html"    
+
+  shard-css-variables:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-variables.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-variables && mv playwright-report github-pages/css-variables
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-variables && mv github-pages /tmp/publish/css-variables
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-variables && mkdir -p ${{ github.ref_name }}/css-variables
+        cp -r /tmp/publish/css-variables/github-pages/css-variables/playwright-report/* ./${{ github.ref_name }}/css-variables
+        git status
+        git add -A ${{ github.ref_name }}/css-variables/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 13400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-variables/index.html"    
+
+  shard-css-view-transitions:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-view-transitions.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-view-transitions && mv playwright-report github-pages/css-view-transitions
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-view-transitions && mv github-pages /tmp/publish/css-view-transitions
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-view-transitions && mkdir -p ${{ github.ref_name }}/css-view-transitions
+        cp -r /tmp/publish/css-view-transitions/github-pages/css-view-transitions/playwright-report/* ./${{ github.ref_name }}/css-view-transitions
+        git status
+        git add -A ${{ github.ref_name }}/css-view-transitions/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 13600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-view-transitions/index.html"    
+
+  shard-css-will-change:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-will-change.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-will-change && mv playwright-report github-pages/css-will-change
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-will-change && mv github-pages /tmp/publish/css-will-change
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-will-change && mkdir -p ${{ github.ref_name }}/css-will-change
+        cp -r /tmp/publish/css-will-change/github-pages/css-will-change/playwright-report/* ./${{ github.ref_name }}/css-will-change
+        git status
+        git add -A ${{ github.ref_name }}/css-will-change/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 13800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-will-change/index.html"    
+
+  shard-css-writing-modes:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-writing-modes.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-writing-modes && mv playwright-report github-pages/css-writing-modes
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-writing-modes && mv github-pages /tmp/publish/css-writing-modes
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-writing-modes && mkdir -p ${{ github.ref_name }}/css-writing-modes
+        cp -r /tmp/publish/css-writing-modes/github-pages/css-writing-modes/playwright-report/* ./${{ github.ref_name }}/css-writing-modes
+        git status
+        git add -A ${{ github.ref_name }}/css-writing-modes/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 14000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-writing-modes/index.html"    
+
+  shard-cssom:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/cssom.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/cssom && mv playwright-report github-pages/cssom
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/cssom && mv github-pages /tmp/publish/cssom
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/cssom && mkdir -p ${{ github.ref_name }}/cssom
+        cp -r /tmp/publish/cssom/github-pages/cssom/playwright-report/* ./${{ github.ref_name }}/cssom
+        git status
+        git add -A ${{ github.ref_name }}/cssom/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 14200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/cssom/index.html"    
+
+  shard-cssom-view:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/cssom-view.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/cssom-view && mv playwright-report github-pages/cssom-view
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/cssom-view && mv github-pages /tmp/publish/cssom-view
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/cssom-view && mkdir -p ${{ github.ref_name }}/cssom-view
+        cp -r /tmp/publish/cssom-view/github-pages/cssom-view/playwright-report/* ./${{ github.ref_name }}/cssom-view
+        git status
+        git add -A ${{ github.ref_name }}/cssom-view/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 14400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/cssom-view/index.html"    
+
+  shard-fetching:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/fetching.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/fetching && mv playwright-report github-pages/fetching
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/fetching && mv github-pages /tmp/publish/fetching
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/fetching && mkdir -p ${{ github.ref_name }}/fetching
+        cp -r /tmp/publish/fetching/github-pages/fetching/playwright-report/* ./${{ github.ref_name }}/fetching
+        git status
+        git add -A ${{ github.ref_name }}/fetching/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 14600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/fetching/index.html"    
+
+  shard-filter-effects:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/filter-effects.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/filter-effects && mv playwright-report github-pages/filter-effects
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/filter-effects && mv github-pages /tmp/publish/filter-effects
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/filter-effects && mkdir -p ${{ github.ref_name }}/filter-effects
+        cp -r /tmp/publish/filter-effects/github-pages/filter-effects/playwright-report/* ./${{ github.ref_name }}/filter-effects
+        git status
+        git add -A ${{ github.ref_name }}/filter-effects/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 14800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/filter-effects/index.html"    
+
+  shard-geometry:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/geometry.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/geometry && mv playwright-report github-pages/geometry
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/geometry && mv github-pages /tmp/publish/geometry
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/geometry && mkdir -p ${{ github.ref_name }}/geometry
+        cp -r /tmp/publish/geometry/github-pages/geometry/playwright-report/* ./${{ github.ref_name }}/geometry
+        git status
+        git add -A ${{ github.ref_name }}/geometry/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 15000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/geometry/index.html"    
+
+  shard-mediaqueries:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/mediaqueries.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/mediaqueries && mv playwright-report github-pages/mediaqueries
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/mediaqueries && mv github-pages /tmp/publish/mediaqueries
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/mediaqueries && mkdir -p ${{ github.ref_name }}/mediaqueries
+        cp -r /tmp/publish/mediaqueries/github-pages/mediaqueries/playwright-report/* ./${{ github.ref_name }}/mediaqueries
+        git status
+        git add -A ${{ github.ref_name }}/mediaqueries/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 15200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/mediaqueries/index.html"    
+
+  shard-motion:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/motion.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/motion && mv playwright-report github-pages/motion
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/motion && mv github-pages /tmp/publish/motion
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/motion && mkdir -p ${{ github.ref_name }}/motion
+        cp -r /tmp/publish/motion/github-pages/motion/playwright-report/* ./${{ github.ref_name }}/motion
+        git status
+        git add -A ${{ github.ref_name }}/motion/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 15400
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/motion/index.html"    
+
+  shard-printing:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/printing.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/printing && mv playwright-report github-pages/printing
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/printing && mv github-pages /tmp/publish/printing
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/printing && mkdir -p ${{ github.ref_name }}/printing
+        cp -r /tmp/publish/printing/github-pages/printing/playwright-report/* ./${{ github.ref_name }}/printing
+        git status
+        git add -A ${{ github.ref_name }}/printing/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 15600
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/printing/index.html"    
+
+  shard-reference:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/reference.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/reference && mv playwright-report github-pages/reference
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/reference && mv github-pages /tmp/publish/reference
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/reference && mkdir -p ${{ github.ref_name }}/reference
+        cp -r /tmp/publish/reference/github-pages/reference/playwright-report/* ./${{ github.ref_name }}/reference
+        git status
+        git add -A ${{ github.ref_name }}/reference/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 15800
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/reference/index.html"    
+
+  shard-selectors:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/selectors.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/selectors && mv playwright-report github-pages/selectors
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/selectors && mv github-pages /tmp/publish/selectors
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/selectors && mkdir -p ${{ github.ref_name }}/selectors
+        cp -r /tmp/publish/selectors/github-pages/selectors/playwright-report/* ./${{ github.ref_name }}/selectors
+        git status
+        git add -A ${{ github.ref_name }}/selectors/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 16000
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/selectors/index.html"    
+
+  shard-css-style-attr:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
+    steps:
+    - uses: actions/checkout@v3
+      with:         
+        fetch-depth: 0
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Print system info
+      run: cat /proc/cpuinfo    
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test 'tests/css-style-attr.generated.spec.ts'
+    - name: Prepare
+      if: always()
+      run: mkdir -p github-pages/css-style-attr && mv playwright-report github-pages/css-style-attr
+    - uses: fregante/setup-git-user@v1  
+      if: always()
+    - name: Publish
+      if: always()
+      run: |
+        git config --global --add safe.directory '*'
+        mkdir -p /tmp/publish/css-style-attr && mv github-pages /tmp/publish/css-style-attr
+        git fetch --all
+        git checkout --track origin/gh-pages
+        git pull origin gh-pages
+        rm -rf ${{ github.ref_name }}/css-style-attr && mkdir -p ${{ github.ref_name }}/css-style-attr
+        cp -r /tmp/publish/css-style-attr/github-pages/css-style-attr/playwright-report/* ./${{ github.ref_name }}/css-style-attr
+        git status
+        git add -A ${{ github.ref_name }}/css-style-attr/*
+        git status
+        git commit -m 'Updated for Action #${{github.run_number}}'
+    - uses: Wandalen/wretry.action@master  
+      if: always()
+      with:
+        command: git update-ref -d refs/remotes/origin/gh-pages && git pull && git push
+        attempt_limit: 5
+        attempt_delay: 16200
+    - name: Print report URL
+      if: always()
+      run: |
+        echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-style-attr/index.html"    

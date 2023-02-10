@@ -2,6 +2,9 @@
 <title>CSS Test Reference</title>
 <link rel="author" href="mailto:emilio@crisal.io" title="Emilio Cobos Álvarez">
 <link rel="author" href="https://www.mozilla.org" title="Mozilla">
+<script>
+  console.log('test')
+</script>
 <style>
   div {
     width: 10ch;
@@ -17,5 +20,12 @@
 </style>
 <div>
   <span></span>
-  Some text that overflows my parent.
+  Some text that oflows my parent.
 </div>
+
+<script>
+  let para = document.querySelector('div');
+  let compStyles = window.getComputedStyle(para);
+  let computedFontFamily = compStyles.getPropertyValue('font-family')
+  console.log('computedFontFamily is ',computedFontFamily)
+</script>
