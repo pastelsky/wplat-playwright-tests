@@ -2,9 +2,9 @@ const template = (shards: string[]) => `
 name: Playwright Tests
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, ssim ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, ssim ]
     
 permissions:
   contents: write

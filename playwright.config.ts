@@ -29,6 +29,7 @@ const config: PlaywrightTestConfig = {
         toHaveScreenshot: {
             threshold: 0.05,
             maxDiffPixels: 0,
+            _comparator: 'ssim-cie94'
         },
         timeout: 5000
     },
