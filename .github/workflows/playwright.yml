@@ -2,9 +2,9 @@
 name: Playwright Tests
 on:
   push:
-    branches: [ main, master, ssim ]
+    branches: [ main, master, ssim, ubuntu-change ]
   pull_request:
-    branches: [ main, master, ssim ]
+    branches: [ main, master, ssim, ubuntu-change ]
     
 permissions:
   contents: write
@@ -13,10 +13,8 @@ permissions:
   
 jobs:
   shard-CSS2:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -64,10 +62,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/CSS2/index.html"    
 
   shard-compositing:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -115,10 +111,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/compositing/index.html"    
 
   shard-css-align:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -166,10 +160,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-align/index.html"    
 
   shard-css-anchor-position:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -217,10 +209,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-anchor-position/index.html"    
 
   shard-css-animations:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -268,10 +258,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-animations/index.html"    
 
   shard-css-backgrounds:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -319,10 +307,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-backgrounds/index.html"    
 
   shard-css-borders:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -370,10 +356,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-borders/index.html"    
 
   shard-css-box:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -421,10 +405,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-box/index.html"    
 
   shard-css-break:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -472,10 +454,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-break/index.html"    
 
   shard-css-cascade:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -523,10 +503,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-cascade/index.html"    
 
   shard-css-color:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -574,10 +552,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-color/index.html"    
 
   shard-css-color-adjust:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -625,10 +601,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-color-adjust/index.html"    
 
   shard-css-conditional:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -676,10 +650,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-conditional/index.html"    
 
   shard-css-contain:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -727,10 +699,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-contain/index.html"    
 
   shard-css-content:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -778,10 +748,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-content/index.html"    
 
   shard-css-counter-styles:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -829,10 +797,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-counter-styles/index.html"    
 
   shard-css-device-adapt:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -880,10 +846,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-device-adapt/index.html"    
 
   shard-css-display:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -931,10 +895,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-display/index.html"    
 
   shard-css-easing:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -982,10 +944,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-easing/index.html"    
 
   shard-css-env:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1033,10 +993,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-env/index.html"    
 
   shard-css-exclusions:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1084,10 +1042,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-exclusions/index.html"    
 
   shard-css-fill-stroke:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1135,10 +1091,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-fill-stroke/index.html"    
 
   shard-css-flexbox:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1186,10 +1140,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-flexbox/index.html"    
 
   shard-css-font-loading:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1237,10 +1189,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-font-loading/index.html"    
 
   shard-css-fonts:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1288,10 +1238,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-fonts/index.html"    
 
   shard-css-forced-color-adjust:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1339,10 +1287,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-forced-color-adjust/index.html"    
 
   shard-css-gcpm:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1390,10 +1336,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-gcpm/index.html"    
 
   shard-css-grid:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1441,10 +1385,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-grid/index.html"    
 
   shard-css-highlight-api:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1492,10 +1434,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-highlight-api/index.html"    
 
   shard-css-images:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1543,10 +1483,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-images/index.html"    
 
   shard-css-inline:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1594,10 +1532,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-inline/index.html"    
 
   shard-css-layout-api:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1645,10 +1581,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-layout-api/index.html"    
 
   shard-css-lists:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1696,10 +1630,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-lists/index.html"    
 
   shard-css-logical:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1747,10 +1679,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-logical/index.html"    
 
   shard-css-masking:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1798,10 +1728,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-masking/index.html"    
 
   shard-css-multicol:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1849,10 +1777,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-multicol/index.html"    
 
   shard-css-nesting:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1900,10 +1826,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-nesting/index.html"    
 
   shard-css-outline:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -1951,10 +1875,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-outline/index.html"    
 
   shard-css-overflow:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2002,10 +1924,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-overflow/index.html"    
 
   shard-css-overscroll-behavior:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2053,10 +1973,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-overscroll-behavior/index.html"    
 
   shard-css-page:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2104,10 +2022,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-page/index.html"    
 
   shard-css-paint-api:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2155,10 +2071,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-paint-api/index.html"    
 
   shard-css-parser-api:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2206,10 +2120,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-parser-api/index.html"    
 
   shard-css-position:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2257,10 +2169,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-position/index.html"    
 
   shard-css-properties-values-api:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2308,10 +2218,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-properties-values-api/index.html"    
 
   shard-css-pseudo:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2359,10 +2267,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-pseudo/index.html"    
 
   shard-css-round-display:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2410,10 +2316,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-round-display/index.html"    
 
   shard-css-ruby:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2461,10 +2365,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-ruby/index.html"    
 
   shard-css-scoping:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2512,10 +2414,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-scoping/index.html"    
 
   shard-css-scroll-anchoring:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2563,10 +2463,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-scroll-anchoring/index.html"    
 
   shard-css-scroll-snap:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2614,10 +2512,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-scroll-snap/index.html"    
 
   shard-css-scrollbars:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2665,10 +2561,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-scrollbars/index.html"    
 
   shard-css-shadow-parts:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2716,10 +2610,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-shadow-parts/index.html"    
 
   shard-css-shapes:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2767,10 +2659,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-shapes/index.html"    
 
   shard-css-size-adjust:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2818,10 +2708,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-size-adjust/index.html"    
 
   shard-css-sizing:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2869,10 +2757,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-sizing/index.html"    
 
   shard-css-speech:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2920,10 +2806,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-speech/index.html"    
 
   shard-css-syntax:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -2971,10 +2855,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-syntax/index.html"    
 
   shard-css-tables:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3022,10 +2904,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-tables/index.html"    
 
   shard-css-text:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3073,10 +2953,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-text/index.html"    
 
   shard-css-text-decor:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3124,10 +3002,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-text-decor/index.html"    
 
   shard-css-toggle:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3175,10 +3051,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-toggle/index.html"    
 
   shard-css-transforms:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3226,10 +3100,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-transforms/index.html"    
 
   shard-css-transitions:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3277,10 +3149,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-transitions/index.html"    
 
   shard-css-typed-om:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3328,10 +3198,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-typed-om/index.html"    
 
   shard-css-ui:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3379,10 +3247,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-ui/index.html"    
 
   shard-css-values:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3430,10 +3296,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-values/index.html"    
 
   shard-css-variables:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3481,10 +3345,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-variables/index.html"    
 
   shard-css-view-transitions:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3532,10 +3394,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-view-transitions/index.html"    
 
   shard-css-will-change:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3583,10 +3443,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-will-change/index.html"    
 
   shard-css-writing-modes:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3634,10 +3492,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/css-writing-modes/index.html"    
 
   shard-cssom:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3685,10 +3541,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/cssom/index.html"    
 
   shard-cssom-view:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3736,10 +3590,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/cssom-view/index.html"    
 
   shard-fetching:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3787,10 +3639,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/fetching/index.html"    
 
   shard-filter-effects:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3838,10 +3688,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/filter-effects/index.html"    
 
   shard-geometry:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3889,10 +3737,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/geometry/index.html"    
 
   shard-mediaqueries:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3940,10 +3786,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/mediaqueries/index.html"    
 
   shard-motion:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -3991,10 +3835,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/motion/index.html"    
 
   shard-printing:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -4042,10 +3884,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/printing/index.html"    
 
   shard-reference:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -4093,10 +3933,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/reference/index.html"    
 
   shard-selectors:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
@@ -4144,10 +3982,8 @@ jobs:
         echo "Report URL: https://pastelsky.github.io/wplat-playwright-tests/${{ github.ref_name }}/selectors/index.html"    
 
   shard-css-style-attr:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         

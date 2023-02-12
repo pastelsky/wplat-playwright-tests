@@ -2,9 +2,9 @@ const template = (shards: string[]) => `
 name: Playwright Tests
 on:
   push:
-    branches: [ main, master, ssim ]
+    branches: [ main, master, ssim, ubuntu-change ]
   pull_request:
-    branches: [ main, master, ssim ]
+    branches: [ main, master, ssim, ubuntu-change ]
     
 permissions:
   contents: write
@@ -14,10 +14,8 @@ permissions:
 jobs:
   ${shards.map((shard, i) =>
     `shard-${shard}:
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.30.0-focal
     steps:
     - uses: actions/checkout@v3
       with:         
